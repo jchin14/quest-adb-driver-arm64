@@ -1,0 +1,46 @@
+# Quest ADB Driver for Windows on ARM64
+
+An unofficial Windows on ARM64 (aarch64) build of the Oculus / Meta Quest ADB USB driver, for running ADB in Windows 11 on ARM (for example Parallels on an Apple Silicon Mac).
+
+The official `oculus-go-adb-driver-2.0` package only supports x86 and x64. When you install it on ARM64 Windows, it fails because:
+
+- the INF only has `NTx86` / `NTamd64` sections, and
+- it depends on x86/x64-only WDF/WinUSB co-installer DLLs.
+
+This repo contains a single INF that adds an `NTarm64` section and uses only Windows' built-in, Microsoft-signed `WinUSB.sys`. There are no binaries.
+
+## Supported devices
+
+- Oculus Go and the original Oculus IDs (`VID_2833` PIDs `0081`, `0083`, `0086`, `0090`)
+- Meta Quest 1 / 2 / 3 / 3S / Pro (`VID_2833` PIDs `0137`, `0183`, `0186`)
+- A fallback match on the standard ADB interface class (`FF/42/01`) and fastboot class (`FF/42/03`), so other Quest PIDs should also be picked up
+
+## Install
+
+> **Note:** The package is unsigned, because editing the INF invalidates the original signature. Don't right-click the `.inf` and choose **Install**. That fails with *"The third-party INF does not contain digital signature information."* Use the steps below instead.
+
+1. **Boot once with driver signature enforcement disabled.**
+   Go to Settings → System → Recovery → Advanced startup → **Restart now**. Then pick Troubleshoot → Advanced options → Startup Settings → **Restart**, and press **7** (*Disable driver signature enforcement*).
+2. **Connect the headset to Windows.**
+   In Parallels, go to Devices → USB & Bluetooth and connect the Quest to Windows, not macOS. Put the headset on and accept **Allow USB debugging**. Developer mode must be enabled on the headset.
+3. **Install the driver from Device Manager.**
+   Right-click the Quest / *ADB Interface* device (it is often under *Other devices* with a yellow **!**). Then choose Update driver → Browse my computer → Let me pick → **Have Disk…**, select `android_winusb.inf`, and pick **Oculus Composite ADB Interface**. On the red warning, click **Install this driver software anyway**.
+4. **Reboot normally.** The driver stays installed, so you don't need to repeat step 1.
+
+## Verify
+
+Install the Android [platform-tools](https://developer.android.com/tools/releases/platform-tools) for Windows, then run:
+
+```
+adb devices
+```
+
+You should see the headset listed as `device`. If it shows as `unauthorized`, accept the prompt in the headset.
+
+## Do you even need this?
+
+On macOS, ADB works natively with no driver. Use the macOS platform-tools, or a native Mac sideloading tool such as SideQuest. This driver is only needed when the tool you want to use runs only on Windows.
+
+## Disclaimer
+
+Unofficial and not affiliated with or endorsed by Meta or Google. The INF is derived from Google's Android USB driver INF, as redistributed in Oculus's ADB driver package. Use at your own risk.

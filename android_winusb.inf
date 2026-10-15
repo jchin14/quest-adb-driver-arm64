@@ -1,0 +1,62 @@
+;
+; Meta Quest ADB WinUSB driver - unofficial Windows on ARM64 build.
+; Adapted from oculus-go-adb-driver-2.0. Uses only the inbox WinUSB driver,
+; so no co-installer DLLs are needed (they are x86/x64-only and obsolete on Win10+).
+;
+[Version]
+Signature           = "$Windows NT$"
+Class               = AndroidUsbDeviceClass
+ClassGuid           = {3F966BD9-FA04-4ec5-991C-D326973B5128}
+Provider            = %ProviderName%
+DriverVer           = 10/11/2026,12.0.0001.0
+PnpLockdown         = 1
+
+[ClassInstall32]
+Addreg = AndroidWinUsbClassReg
+
+[AndroidWinUsbClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-1
+
+[Manufacturer]
+%ProviderName% = Quest, NTarm64, NTamd64
+
+[Quest.NTarm64]
+;Oculus HMD (original IDs)
+%SingleAdbInterface%        = USB_Install, USB\VID_2833&PID_0086
+%CompositeAdbInterface%     = USB_Install, USB\VID_2833&PID_0083&MI_01
+%CompositeAdbInterface%     = USB_Install, USB\VID_2833&PID_0090
+%SingleBootLoaderInterface% = USB_Install, USB\VID_2833&PID_0081
+;Meta Quest 1/2/3/3S/Pro
+%SingleAdbInterface%        = USB_Install, USB\VID_2833&PID_0186
+%CompositeAdbInterface%     = USB_Install, USB\VID_2833&PID_0186&MI_01
+%CompositeAdbInterface%     = USB_Install, USB\VID_2833&PID_0183&MI_01
+%CompositeAdbInterface%     = USB_Install, USB\VID_2833&PID_0137&MI_01
+;Any ADB interface (class FF / subclass 42 / protocol 01) - catches other Quest PIDs
+%CompositeAdbInterface%     = USB_Install, USB\Class_FF&SubClass_42&Prot_01
+%SingleBootLoaderInterface% = USB_Install, USB\Class_FF&SubClass_42&Prot_03
+
+[Quest.NTamd64]
+%SingleAdbInterface%        = USB_Install, USB\VID_2833&PID_0186
+%CompositeAdbInterface%     = USB_Install, USB\Class_FF&SubClass_42&Prot_01
+
+[USB_Install]
+Include = winusb.inf
+Needs   = WINUSB.NT
+
+[USB_Install.Services]
+Include = winusb.inf
+Needs   = WINUSB.NT.Services
+
+[USB_Install.HW]
+AddReg  = Dev_AddReg
+
+[Dev_AddReg]
+HKR,,DeviceInterfaceGUIDs,0x10000,"{F72FE0D4-CBCB-407d-8814-9ED673D0DD6B}"
+
+[Strings]
+ProviderName                = "Quest ADB (community ARM64 build)"
+SingleAdbInterface          = "Oculus ADB Interface"
+CompositeAdbInterface       = "Oculus Composite ADB Interface"
+SingleBootLoaderInterface   = "Oculus Bootloader Interface"
+ClassName                   = "Oculus Device"
