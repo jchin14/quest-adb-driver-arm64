@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - android_winusb.inf
+      - README.md
+      - .github/workflows/release.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Package driver
+        run: |
+          mkdir -p dist/quest-adb-driver-arm64
+          cp android_winusb.inf README.md dist/quest-adb-driver-arm64/
+          cd dist && zip -r quest-adb-driver-arm64.zip quest-adb-driver-arm64
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v1.0.${{ github.run_number }}"
+          gh release create "$TAG" dist/quest-adb-driver-arm64.zip \
+            --target "${{ github.sha }}" \
+            --title "Quest ADB Driver ARM64 $TAG" \
+            --notes "Automated build from ${{ github.sha }}. Unzip and follow the README to install." \
+            --latest

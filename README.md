@@ -15,6 +15,12 @@ This repo contains a single INF that adds an `NTarm64` section and uses only Win
 - Meta Quest 1 / 2 / 3 / 3S / Pro (`VID_2833` PIDs `0137`, `0183`, `0186`)
 - A fallback match on the standard ADB interface class (`FF/42/01`) and fastboot class (`FF/42/03`), so other Quest PIDs should also be picked up
 
+## Download
+
+**[Download the latest release (zip)](https://github.com/jchin14/quest-adb-driver-arm64/releases/latest/download/quest-adb-driver-arm64.zip)**
+
+The zip is rebuilt automatically from `main` whenever the driver or README changes.
+
 ## Install
 
 > **Note:** The package is unsigned, because editing the INF invalidates the original signature. Don't right-click the `.inf` and choose **Install**. That fails with *"The third-party INF does not contain digital signature information."* Use the steps below instead.
@@ -26,6 +32,20 @@ This repo contains a single INF that adds an `NTarm64` section and uses only Win
 3. **Install the driver from Device Manager.**
    Right-click the Quest / *ADB Interface* device (it is often under *Other devices* with a yellow **!**). Then choose Update driver → Browse my computer → Let me pick → **Have Disk…**, select `android_winusb.inf`, and pick **Oculus Composite ADB Interface**. On the red warning, click **Install this driver software anyway**.
 4. **Reboot normally.** The driver stays installed, so you don't need to repeat step 1.
+
+## If step 1 doesn't work: test signing (needs Secure Boot off)
+
+If the Startup Settings menu isn't available, or Windows still refuses the driver, you can switch Windows into test-signing mode instead. Test signing can't be turned on while **Secure Boot** is enabled, so turn Secure Boot off first.
+
+1. **Turn off Secure Boot in Parallels.** Shut Windows down completely (not suspend). In Parallels, open the VM's **Configure** → **Hardware** → **Boot**, and untick **Secure Boot** (it may be under *Advanced*). Start Windows again.
+2. **Turn on test signing.** In an **administrator** PowerShell, run:
+   ```
+   bcdedit /set testsigning on
+   ```
+   If you get *"The value is protected by Secure Boot policy"*, Secure Boot is still on. Go back to step 1.
+3. **Reboot.** A *Test Mode* watermark appears on the desktop.
+4. **Install the driver.** Repeat steps 2–3 of [Install](#install).
+5. **Optional cleanup.** Run `bcdedit /set testsigning off`, reboot, and turn Secure Boot back on in Parallels.
 
 ## Verify
 
