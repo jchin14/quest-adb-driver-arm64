@@ -64,3 +64,11 @@ On macOS, ADB works natively with no driver. Use the macOS platform-tools, or a 
 ## Disclaimer
 
 Unofficial and not affiliated with or endorsed by Meta or Google. The INF is derived from Google's Android USB driver INF, as redistributed in Oculus's ADB driver package. Use at your own risk.
+
+## License
+
+This project is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE).
+
+You're free to use, modify, and share it for personal, hobby, educational, research, and other **noncommercial** purposes. **Commercial use requires prior written permission** — contact Jonathan Chin via [GitHub](https://github.com/jchin14) to arrange a commercial license.
+
+This license covers only Jonathan Chin's original work in this repository. `android_winusb.inf` is derived from Google's Android USB driver INF as redistributed in Oculus's ADB driver package; the portions taken from that material remain under their original terms and are not relicensed here.
