@@ -1,13 +1,13 @@
 # Quest ADB Driver for Windows on ARM64
 
-An unofficial Windows on ARM64 (aarch64) build of the Oculus / Meta Quest ADB USB driver, for running ADB in Windows 11 on ARM (for example Parallels on an Apple Silicon Mac).
+An unofficial ARM64 build of the Oculus / Meta Quest ADB USB driver, for ADB on Windows 11 on ARM (e.g. Parallels on an Apple Silicon Mac).
 
-The official `oculus-go-adb-driver-2.0` package only supports x86 and x64. When you install it on ARM64 Windows, it fails because:
+The official `oculus-go-adb-driver-2.0` fails on ARM64 because:
 
-- the INF only has `NTx86` / `NTamd64` sections, and
-- it depends on x86/x64-only WDF/WinUSB co-installer DLLs.
+- its INF only has `NTx86` / `NTamd64` sections
+- it depends on x86/x64-only WDF/WinUSB co-installer DLLs
 
-This repo contains a single INF that adds an `NTarm64` section and uses only Windows' built-in, Microsoft-signed `WinUSB.sys`. There are no binaries.
+This repo is a single INF that adds an `NTarm64` section and uses Windows' built-in, Microsoft-signed `WinUSB.sys`. No binaries.
 
 ## Supported devices
 
