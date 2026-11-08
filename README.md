@@ -65,6 +65,10 @@ On macOS, ADB works natively with no driver. Use the macOS platform-tools, or a 
 
 Unofficial and not affiliated with or endorsed by Meta or Google. The INF is derived from Google's Android USB driver INF, as redistributed in Oculus's ADB driver package. Use at your own risk.
 
+## Support
+
+If you find this useful and can afford to, support is appreciated: [buy me a coffee](https://buymeacoffee.com/jchin14). Just getting started, the domain, hosting, Cloudflare Workers and Apple and Google developer accounts add up to a few hundred dollars. Your support helps me keep making tools that are helpful for everyone.
+
 ## License
 
 This project is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE).
